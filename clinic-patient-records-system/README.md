@@ -1,13 +1,60 @@
 # Clinic Patient Records System
 
-A Django-based web application for managing patient records at a clinic. The
-system keeps track of **patients**, **doctors**, **appointments**, and
-**medical records**, and exposes an admin dashboard for staff to manage all
-clinic data from one place.
+## Objective
+Apply Django fundamentals to design and build a multi-app web application,
+covering:
+* Setting up a Python virtual environment and installing Django
+* Creating a Django project and multiple related applications
+* Designing models and relationships using the Django ORM
+* Registering applications and connecting URL configurations
+* Using the Django admin interface to manage application data
+* Designing an Entity Relationship Diagram (ERD) before implementation
 
-This project was built as part of a group assignment to demonstrate the
-fundamentals of Django project/app structure, models, the Django ORM, URL
-routing, and the built-in admin interface.
+## What was done
+Built a **Clinic Patient Records System** using Django, made up of four
+apps that mirror the real entities of a clinic:
+
+1. **patients** — stores patient bio-data (name, date of birth, gender,
+   contact info, blood group, emergency contact)
+2. **doctors** — stores doctor profiles (name, specialization, license
+   number, contact info)
+3. **appointments** — schedules appointments, linking a patient to a
+   doctor with a date, reason, and status
+4. **medicalrecords** — stores diagnosis, treatment, prescription, and
+   notes for each visit, linked to a patient, a doctor, and optionally the
+   related appointment
+
+The project includes:
+* A Python virtual environment with Django installed and verified
+  (`python -m django --version`)
+* Four Django apps, each registered inside `INSTALLED_APPS` in
+  `settings.py`
+* A `urls.py` in every app, connected to the project's root `urls.py`
+  using `include()`
+* A simple `HttpResponse` view in each app plus a project-level home page
+  linking all modules, verified by running the development server
+* Models for all four entities with primary keys and foreign key
+  relationships (Patient ↔ Appointment ↔ Doctor, and Patient/Doctor ↔
+  Medical Record), all registered in the Django admin
+* An Entity Relationship Diagram (`docs/ERD.pdf`) showing entities,
+  attributes, primary keys, and relationship cardinalities
+* A superuser account created via `python manage.py createsuperuser` to
+  access and manage data through `/admin/`
+
+## Challenges faced
+* Deciding how to split the system into separate apps versus one single
+  app, and settling on four apps that map cleanly to the ERD entities
+* Getting foreign key relationships right across apps (Appointment and
+  Medical Record both depend on Patient and Doctor), and importing models
+  between apps without circular imports
+* Correctly wiring each app's `urls.py` into the project's root
+  `urls.py` using `include()`
+* Making the `appointment` field on Medical Record optional
+  (`null=True, blank=True`) since not every record originates from a
+  scheduled appointment
+* Translating the ERD cardinalities (1‑to‑M and 1‑to‑0..1) accurately
+  into Django model fields
+* Keeping migrations consistent across four interdependent apps
 
 ## Project Description
 
@@ -111,6 +158,8 @@ clinic-patient-records-system/
 │    └── group_members.pdf
 ```
 
-## Group Members
+
+
+## Members Participated
 
 See [`docs/group_members.pdf`](docs/group_members.pdf).
